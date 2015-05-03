@@ -1,0 +1,27 @@
+{
+  "name": "williamson/laragram",
+  "description": "A Laravel Wrapper for telegram-cli",
+  "license": "MPL-2.0",
+  "keywords": [
+    "telegram",
+    "php-cli",
+    "laravel"
+  ],
+  "authors": [
+    {
+      "name": "Jonathan Williamson",
+      "email": "jonnywilliamson@gmail.com",
+      "name": "zyberspace",
+      "email": "zyberspace@zyberware.org"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Williamson\\Laragram\\": "src/"
+    }
+  },
+  "minimum-stability": "stable"
+}
