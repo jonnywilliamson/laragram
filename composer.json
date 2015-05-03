@@ -10,9 +10,7 @@
   "authors": [
     {
       "name": "Jonathan Williamson",
-      "email": "jonnywilliamson@gmail.com",
-      "name": "zyberspace",
-      "email": "zyberspace@zyberware.org"
+      "email": "jonnywilliamson@gmail.com"
     }
   ],
   "require": {
