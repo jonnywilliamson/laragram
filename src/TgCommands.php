@@ -65,15 +65,15 @@ class TgCommands extends AbstractWrapperCommands
 
 
     /**
-     * Get info about a chat $groupName
-     * @param $groupName
+     * Get info about a chat $chat
+     * @param $chat
      * @return bool|string
      */
-    public function chatInfo($groupName)
+    public function chatInfo($chat)
     {
-        $groupName = $this->escapeStringArgument($groupName);
+        $chat = escapePeer($chat); //Not escapeStringArgument as chat needs underscores if spaces in name
 
-        return $this->exec('chat_info ' . $groupName);
+        return $this->exec('chat_info ' . $chat);
     }
 
     /**
@@ -89,6 +89,20 @@ class TgCommands extends AbstractWrapperCommands
         $peer = $this->escapePeer($peer);
 
         return $this->exec('chat_del_user ' . $chat . ' ' . $peer);
+    }
+
+    /**
+     * Rename $chat to $newChatName
+     * @param $chat
+     * @param $newChatName
+     * @return bool|string
+     */
+    public function chatRename($chat, $newChatName)
+    {
+        $chat = $this->escapePeer($chat); //Not escapeStringArgument as chat needs underscores if spaces in name
+        $newChatName = $this->escapePeer($newChatName); //Not escapeStringArgument as chat needs underscores if spaces in name
+
+        return $this->exec('rename_chat ' . $chat . ' ' . $newChatName);
     }
 
     /**
