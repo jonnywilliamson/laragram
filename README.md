@@ -30,7 +30,7 @@ To stop the daemon use `killall telegram-cli` or `kill -TERM [telegram-pid]`.
 In your project-root:
 
 ```shell
-composer require williamson/laragram
+composer require williamson/laragram:dev-master
 ```
 
 Composer will then automatically add the package to your project requirements and install it (also creates the `composer.json` if you don't have one already).
