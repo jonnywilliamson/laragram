@@ -51,6 +51,20 @@ class TgCommands extends AbstractWrapperCommands
     }
 
     /**
+     * Create a secret chat with $peer
+     *
+     * @param $peer
+     * @return bool|string
+     */
+    public function chatCreateSecret($peer)
+    {
+        $peer = $this->escapePeer($peer);
+
+        return $this->exec('create_secret_chat ' . $peer);
+    }
+
+
+    /**
      * Deletes $peer from $chat
      *
      * @param        $chat
