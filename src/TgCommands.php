@@ -65,6 +65,18 @@ class TgCommands extends AbstractWrapperCommands
 
 
     /**
+     * Get info about a chat $groupName
+     * @param $groupName
+     * @return bool|string
+     */
+    public function chatInfo($groupName)
+    {
+        $groupName = $this->escapeStringArgument($groupName);
+
+        return $this->exec('chat_info ' . $groupName);
+    }
+
+    /**
      * Deletes $peer from $chat
      *
      * @param        $chat
