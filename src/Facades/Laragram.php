@@ -11,7 +11,7 @@ class Laragram extends Facade {
      */
     protected static function getFacadeAccessor()
     {
-        return 'laragram';
+        return 'Williamson\Laragram\TgCommands';
     }
 
 } 

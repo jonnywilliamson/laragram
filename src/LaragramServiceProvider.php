@@ -29,7 +29,7 @@ class LaragramServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('laragram', function () {
+        $this->app->singleton('Williamson\Laragram\TgCommands', function () {
             return new TgCommands('unix:///tmp/tg.sck');
         });
     }
