@@ -63,19 +63,6 @@ class TgCommands extends AbstractWrapperCommands
         return $this->exec('create_secret_chat ' . $peer);
     }
 
-
-    /**
-     * Get info about a chat $chat
-     * @param $chat
-     * @return bool|string
-     */
-    public function chatInfo($chat)
-    {
-        $chat = escapePeer($chat); //Not escapeStringArgument as chat needs underscores if spaces in name
-
-        return $this->exec('chat_info ' . $chat);
-    }
-
     /**
      * Deletes $peer from $chat
      *
@@ -92,6 +79,30 @@ class TgCommands extends AbstractWrapperCommands
     }
 
     /**
+     * Return chat link that can be used to join a chat
+     * @param $chatNameOrId
+     * @return bool|string
+     */
+    public function chatExportLink($chatNameOrId)
+    {
+        $chat = $this->escapePeer($chatNameOrId); //Not escapeStringArgument as chat needs underscores if spaces in name
+
+        return $this->exec('export_chat_link ' . $chat);
+    }
+
+    /**
+     * Get info about a chat $chat
+     * @param $chat
+     * @return bool|string
+     */
+    public function chatInfo($chat)
+    {
+        $chat = $this->escapePeer($chat); //Not escapeStringArgument as chat needs underscores if spaces in name
+
+        return $this->exec('chat_info ' . $chat);
+    }
+
+    /**
      * Rename $chat to $newChatName
      * @param $chat
      * @param $newChatName
@@ -100,7 +111,7 @@ class TgCommands extends AbstractWrapperCommands
     public function chatRename($chat, $newChatName)
     {
         $chat = $this->escapePeer($chat); //Not escapeStringArgument as chat needs underscores if spaces in name
-        $newChatName = $this->escapePeer($newChatName); //Not escapeStringArgument as chat needs underscores if spaces in name
+        $newChatName = $this->escapeStringArgument($newChatName); //Not escapeStringArgument as chat needs underscores if spaces in name
 
         return $this->exec('rename_chat ' . $chat . ' ' . $newChatName);
     }
@@ -172,6 +183,16 @@ class TgCommands extends AbstractWrapperCommands
     }
 
     /**
+     * Gets the users contact list
+     *
+     * @return bool|string
+     */
+    public function contactList()
+    {
+        return explode(PHP_EOL, $this->exec('contact_list'));
+    }
+
+    /**
      * Renames a user in the contact list
      *
      * @param string $contact   The contact, gets escaped with escapePeer(),
@@ -191,6 +212,26 @@ class TgCommands extends AbstractWrapperCommands
         $lastName  = $this->escapeStringArgument($lastName);
 
         return $this->exec('rename_contact ' . $contact . ' ' . $firstName . ' ' . $lastName);
+    }
+
+    /**
+     * Delete a message with ID of $msgId
+     * @param $msgId
+     * @return bool|string
+     */
+    public function deleteMsg($msgId)
+    {
+        return $this->exec('delete_msg ' . $msgId);
+    }
+
+    /**
+     * Return the export card for the user
+     *
+     * @return bool|string
+     */
+    public function exportCard()
+    {
+        return $this->exec('export_card');
     }
 
     /**
