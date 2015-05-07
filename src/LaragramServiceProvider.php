@@ -30,7 +30,14 @@ class LaragramServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('Williamson\Laragram\TgCommands', function () {
-            return new TgCommands('unix:///tmp/tg.sck');
+            try {
+                $tg = new TgCommands('unix:///tmp/tg.sck');
+            } catch (ClientException $e) {
+                Log::error($e->getMessage());
+                return;
+            }
+
+            return $tg;
         });
     }
 }
