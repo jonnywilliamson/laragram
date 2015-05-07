@@ -20,11 +20,15 @@ abstract class AbstractWrapperCommands
      */
     public function __construct($remoteSocket)
     {
-        $this->_fp = stream_socket_client($remoteSocket);
-        if ($this->_fp === false) {
-            throw new ClientException('Could not connect to socket "' . $remoteSocket . '"');
+        if (is_resource($remoteSocket)) {
+            $this->_fp = stream_socket_client($remoteSocket);
+            if ($this->_fp === false) {
+                throw new ClientException('Could not connect to socket "' . $remoteSocket . '"');
+            }
+            stream_set_timeout($this->_fp, 1); //This way fgets() returns false if telegram-cli gives us no response.
         }
-        stream_set_timeout($this->_fp, 1); //This way fgets() returns false if telegram-cli gives us no response.
+
+        throw new ClientException('File Socket "' . $remoteSocket . '" does not exist');
     }
 
     /**
@@ -32,7 +36,9 @@ abstract class AbstractWrapperCommands
      */
     public function __destruct()
     {
-        fclose($this->_fp);
+        if (is_resource($this->_fp)) {
+            fclose($this->_fp);
+        }
     }
 
     /**
