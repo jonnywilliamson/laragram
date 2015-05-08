@@ -35,6 +35,7 @@ class LaragramServiceProvider extends ServiceProvider
                 $tg = new TgCommands('unix:///tmp/tg.sck');
             } catch (ClientException $e) {
                 Log::error($e->getMessage());
+
                 return;
             }
 
