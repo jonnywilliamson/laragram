@@ -1,8 +1,8 @@
-<?php namespace Williamson\Laragram\Facades;
+<?php namespace Williamson\Laragram\Laravel;
 
 use Illuminate\Support\Facades\Facade;
 
-class Laragram extends Facade {
+class LaragramFacade extends Facade {
 
     /**
      * Get the binding in the IoC container

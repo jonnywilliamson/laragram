@@ -1,7 +1,8 @@
-<?php namespace Williamson\Laragram;
+<?php namespace Williamson\Laragram\Laravel;
 
 use Illuminate\Support\ServiceProvider;
 use Log;
+use Williamson\Laragram\TgCommands;
 
 class LaragramServiceProvider extends ServiceProvider
 {
