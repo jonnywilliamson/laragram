@@ -1,6 +1,7 @@
 <?php namespace Williamson\Laragram;
 
 use Illuminate\Support\ServiceProvider;
+use Log;
 
 class LaragramServiceProvider extends ServiceProvider
 {
