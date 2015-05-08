@@ -32,7 +32,7 @@ abstract class AbstractWrapperCommands
      */
     public function __destruct()
     {
-        if (is_resource($this->_fp)) {
+        if ($this->_fp) {
             fclose($this->_fp);
         }
     }
