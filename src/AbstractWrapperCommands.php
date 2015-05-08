@@ -20,7 +20,7 @@ abstract class AbstractWrapperCommands
      */
     public function __construct($remoteSocket)
     {
-        $this->_fp = stream_socket_client($remoteSocket);
+        $this->_fp = @stream_socket_client($remoteSocket);
         if ($this->_fp === false) {
             throw new ClientException('Could not connect to socket "' . $remoteSocket . '"');
         }
