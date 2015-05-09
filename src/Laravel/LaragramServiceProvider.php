@@ -3,6 +3,7 @@
 use Illuminate\Support\ServiceProvider;
 use Log;
 use Williamson\Laragram\TgCommands;
+use Williamson\Laragram\ClientException;
 
 class LaragramServiceProvider extends ServiceProvider
 {
