@@ -51,7 +51,7 @@ abstract class AbstractWrapperCommands
     {
         $this->socket->write(str_replace("\n", '\n', $command) . PHP_EOL);
 
-        $answer = $this->socket->read(4096); //"ANSWER $bytes" if there is a return value or \n if not
+        $answer = $this->socket->read(4096, PHP_NORMAL_READ); //"ANSWER $bytes" if there is a return value or \n if not
         if (is_string($answer)) {
             if (substr($answer, 0, 7) === 'ANSWER ') {
                 $bytes = (int) substr($answer, 7);
