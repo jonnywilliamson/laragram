@@ -15,7 +15,8 @@
   ],
   "require": {
     "php": ">=5.4.0",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "clue/socket-raw": "^1.2"
   },
   "autoload": {
     "psr-4": {

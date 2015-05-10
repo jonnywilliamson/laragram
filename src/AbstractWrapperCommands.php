@@ -1,5 +1,8 @@
 <?php namespace Williamson\Laragram;
 
+use InvalidArgumentException;
+use Socket\Raw\Factory;
+
 abstract class AbstractWrapperCommands
 {
 
@@ -9,6 +12,7 @@ abstract class AbstractWrapperCommands
      * @var ressource
      */
     protected $_fp;
+    protected $socket;
 
     /**
      * Connects to the telegram-cli.
@@ -20,11 +24,12 @@ abstract class AbstractWrapperCommands
      */
     public function __construct($remoteSocket)
     {
-        $this->_fp = @stream_socket_client($remoteSocket);
-        if ($this->_fp === false) {
-            throw new ClientException('Could not connect to socket "' . $remoteSocket . '"');
-        }
-        stream_set_timeout($this->_fp, 1); //This way fgets() returns false if telegram-cli gives us no response.
+        $factory = new Factory();
+        $this->socket = $factory->createClient($remoteSocket);
+//        if ($this->_fp === false) {
+//            throw new ClientException('Could not connect to socket "' . $remoteSocket . '"');
+//        }
+//        stream_set_timeout($this->_fp, 1); //This way fgets() returns false if telegram-cli gives us no response.
     }
 
     /**
@@ -32,9 +37,7 @@ abstract class AbstractWrapperCommands
      */
     public function __destruct()
     {
-        if ($this->_fp) {
-            fclose($this->_fp);
-        }
+
     }
 
     /**
@@ -46,14 +49,14 @@ abstract class AbstractWrapperCommands
      */
     public function exec($command)
     {
-        fwrite($this->_fp, str_replace("\n", '\n', $command) . PHP_EOL);
+        $this->socket->write(str_replace("\n", '\n', $command) . PHP_EOL);
 
-        $answer = fgets($this->_fp); //"ANSWER $bytes" if there is a return value or \n if not
+        $answer = $this->socket->read(4096); //"ANSWER $bytes" if there is a return value or \n if not
         if (is_string($answer)) {
             if (substr($answer, 0, 7) === 'ANSWER ') {
                 $bytes = (int) substr($answer, 7);
                 if ($bytes > 0) {
-                    $string = trim(fread($this->_fp, $bytes + 1));
+                    $string = trim($this->socket->read($bytes + 1));
 
                     if ($string === 'SUCCESS') { //For "status_online" and "status_offline"
                         return true;
