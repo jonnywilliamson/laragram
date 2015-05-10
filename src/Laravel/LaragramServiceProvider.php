@@ -15,14 +15,11 @@ class LaragramServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-//        $this->package('williamson/laragram', null, __DIR__);
-
-//        $loader  = AliasLoader::getInstance();
-//        $aliases = Config::get('app.aliases');
-//        if (empty($aliases['TG']))
-//        {
-//            $loader->alias('TG', 'Williamson\Laragram\Facades\LaragramFacade');
-//        }
+        $loader  = AliasLoader::getInstance();
+        $aliases = Config::get('app.aliases');
+        if (empty($aliases['TG'])) {
+            $loader->alias('TG', 'Williamson\Laragram\Facades\LaragramFacade');
+        }
     }
 
     /**
