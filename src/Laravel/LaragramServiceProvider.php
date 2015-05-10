@@ -1,5 +1,7 @@
 <?php namespace Williamson\Laragram\Laravel;
 
+use Config;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Log;
 use Williamson\Laragram\TgCommands;
