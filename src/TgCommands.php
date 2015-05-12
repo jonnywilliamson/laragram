@@ -9,12 +9,12 @@ class TgCommands extends AbstractWrapperCommands
     /**
      * Send a broadcast message to several users at once.
      * @param array $peers
-     * @param $msg
+     * @param       $msg
      * @return bool|string
      */
     public function broadcastMsg(array $peers, $msg)
     {
-        $peerList  = $this->formatPeers($peers);
+        $peerList = $this->formatPeers($peers);
 
         return $this->exec('broadcast ' . $peerList . ' ' . $msg);
     }
@@ -110,7 +110,7 @@ class TgCommands extends AbstractWrapperCommands
      */
     public function chatRename($chat, $newChatName)
     {
-        $chat = $this->escapePeer($chat); //Not escapeStringArgument as chat needs underscores if spaces in name
+        $chat        = $this->escapePeer($chat); //Not escapeStringArgument as chat needs underscores if spaces in name
         $newChatName = $this->escapeStringArgument($newChatName); //Not escapeStringArgument as chat needs underscores if spaces in name
 
         return $this->exec('rename_chat ' . $chat . ' ' . $newChatName);
@@ -348,13 +348,13 @@ class TgCommands extends AbstractWrapperCommands
      *
      * @param string $peer
      * @param string $mediaUri Either a URL or a local filename of the audio you wish to send
-     *
+     * @param bool   $cleanUp
+     * @return bool
      * @uses exec()
      * @uses escapePeer()
      * @uses escapeStringArgument()
-     * @return bool
      */
-    public function sendAudio($peer, $mediaUri)
+    public function sendAudio($peer, $mediaUri, $cleanUp = false)
     {
         $peer = $this->escapePeer($peer);
 
@@ -367,8 +367,10 @@ class TgCommands extends AbstractWrapperCommands
         //Send media file.
         $result = $this->exec('send_audio ' . $peer . ' ' . $processedMedia['filepath']);
 
-        //Clean up if media file came from REMOTE address
-        $this->cleanUpMedia($processedMedia);
+        if ($cleanUp) {
+            //Clean up if media file came from REMOTE address
+            $this->cleanUpMedia($processedMedia);
+        }
 
         return $result;
     }
@@ -396,12 +398,13 @@ class TgCommands extends AbstractWrapperCommands
      *
      * @param string $peer
      * @param string $mediaUri Either a URL or a local filename of the media you wish to send
+     * @param bool   $cleanUp
+     * @return bool
      * @uses exec()
      * @uses escapePeer()
      * @uses escapeStringArgument()
-     * @return bool
      */
-    public function sendDocument($peer, $mediaUri)
+    public function sendDocument($peer, $mediaUri, $cleanUp = false)
     {
         $peer = $this->escapePeer($peer);
 
@@ -414,8 +417,10 @@ class TgCommands extends AbstractWrapperCommands
         //Send media file.
         $result = $this->exec('send_document ' . $peer . ' ' . $processedMedia['filepath']);
 
-        //Clean up if media file came from REMOTE address
-        $this->cleanUpMedia($processedMedia);
+        if ($cleanUp) {
+            //Clean up if media file came from REMOTE address
+            $this->cleanUpMedia($processedMedia);
+        }
 
         return $result;
     }
@@ -468,12 +473,13 @@ class TgCommands extends AbstractWrapperCommands
      * @param string $peer
      * @param string $mediaUri Either a URL or a local filename of the image you wish to send
      *
+     * @param bool   $cleanUp
+     * @return bool
      * @uses exec()
      * @uses escapePeer()
      * @uses escapeStringArgument()
-     * @return bool
      */
-    public function sendPhoto($peer, $mediaUri)
+    public function sendPhoto($peer, $mediaUri, $cleanUp = false)
     {
         $peer = $this->escapePeer($peer);
 
@@ -486,8 +492,10 @@ class TgCommands extends AbstractWrapperCommands
         //Send media file.
         $result = $this->exec('send_photo ' . $peer . ' ' . $processedMedia['filepath']);
 
-        //Clean up if media file came from REMOTE address
-        $this->cleanUpMedia($processedMedia);
+        if ($cleanUp) {
+            //Clean up if media file came from REMOTE address
+            $this->cleanUpMedia($processedMedia);
+        }
 
         return $result;
     }
@@ -498,12 +506,13 @@ class TgCommands extends AbstractWrapperCommands
      * @param string $peer
      * @param string $mediaUri Either a URL or a local filename of the text file you wish to send
      *
+     * @param bool   $cleanUp
+     * @return bool
      * @uses exec()
      * @uses escapePeer()
      * @uses escapeStringArgument()
-     * @return bool
      */
-    public function sendText($peer, $mediaUri)
+    public function sendText($peer, $mediaUri, $cleanUp = false)
     {
         $peer = $this->escapePeer($peer);
 
@@ -516,8 +525,10 @@ class TgCommands extends AbstractWrapperCommands
         //Send media file.
         $result = $this->exec('send_text ' . $peer . ' ' . $processedMedia['filepath']);
 
-        //Clean up if media file came from REMOTE address
-        $this->cleanUpMedia($processedMedia);
+        if ($cleanUp) {
+            //Clean up if media file came from REMOTE address
+            $this->cleanUpMedia($processedMedia);
+        }
 
         return $result;
     }
@@ -557,13 +568,13 @@ class TgCommands extends AbstractWrapperCommands
      *
      * @param string $peer
      * @param string $mediaUri Either a URL or a local filename of the video you wish to send
-     *
+     * @param bool   $cleanUp
+     * @return bool
      * @uses exec()
      * @uses escapePeer()
      * @uses escapeStringArgument()
-     * @return bool
      */
-    public function sendVideo($peer, $mediaUri)
+    public function sendVideo($peer, $mediaUri, $cleanUp = false)
     {
         $peer = $this->escapePeer($peer);
 
@@ -576,8 +587,10 @@ class TgCommands extends AbstractWrapperCommands
         //Send media file.
         $result = $this->exec('send_video ' . $peer . ' ' . $processedMedia['filepath']);
 
-        //Clean up if media file came from REMOTE address
-        $this->cleanUpMedia($processedMedia);
+        if ($cleanUp) {
+            //Clean up if media file came from REMOTE address
+            $this->cleanUpMedia($processedMedia);
+        }
 
         return $result;
     }
@@ -803,10 +816,21 @@ class TgCommands extends AbstractWrapperCommands
                 return false;
             }
 
-            //Lets see if we can use the file name given to us, otherwise we'll create a new unique filename.
+            //Have we already downloaded this file before? If so, we should just reuse it!
             $originalFilename = pathinfo($fileUri, PATHINFO_BASENAME);
-            $mediaFileInfo    = $this->determineFilename($originalFilename, $mediaFileInfo);
+            $fileOnDisk       = sys_get_temp_dir() . '/' . $originalFilename;
 
+            if (file_exists($fileOnDisk) && (filesize($fileOnDisk) == $mediaFileInfo['filesize'])) {
+                $mediaFileInfo['filepath'] = $fileOnDisk;
+
+                //File is identical (most likely) no need to redownload it.
+                return $mediaFileInfo;
+            };
+
+            //So either file doesn't exist on local drive or a file with a different filesize is already there.
+            $mediaFileInfo = $this->determineFilename($originalFilename, $mediaFileInfo);
+
+            //Save to a new temp file name
             $tempFileName = fopen($mediaFileInfo['filepath'], 'w');
             if ($tempFileName) {
                 $this->downloadMediaFileFromURL($fileUri, $tempFileName);
