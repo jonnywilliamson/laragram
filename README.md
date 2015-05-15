@@ -113,7 +113,7 @@ Now anywhere in your app you can send a telegram message quickly and easily like
      });
 ```
 
-Remember that the name should have underscores instead of spaces eg `firstname_lastname`, OR you can use the persons telegram ID directly. This method is far more reliable.
+Remember that the name should have underscores instead of spaces eg `firstname_lastname`, OR you can use `user#`and then the persons telegram ID directly.  This method is far more reliable. eg `user#123456789`
 
 
 In addition to sendMessage, the following commands are available to you:
@@ -184,15 +184,15 @@ stopasgroup=true
 autostart=true
 autorestart=true
 startretries=3
-user=username
-stdout_logfile=<insert you own log folder and log filename. Must exist>
-stderr_logfile=<insert you own log folder and log filename. Must exist>
+user=<insert linux username>
+stdout_logfile=<insert your own log folder and log filename. Must exist>
+stderr_logfile=<insert your own log folder and log filename. Must exist>
 stdout_logfile_maxbytes=10MB
 stdout_logfile_backups=10
 stdout_capture_maxbytes=1MB
 ```
 
-Save the file and restart supervisor (make sure that telegram-cli is NOT running before you do this, supervisor will not take care of insuring that the process always runs even if it crashes).
+Save the file and restart supervisor (make sure that telegram-cli is NOT running before you do this, supervisor will now take care of insuring that the process always runs even if it crashes).
 
 ```shell
 sudo service supervisor restart
