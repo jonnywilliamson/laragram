@@ -191,8 +191,8 @@ and copy the following into it, adding/replacing any log files you wish to creat
 ```shell
 [program:telegram]
 command=/bin/bash -c "rm -f /tmp/tg.sck && /home/username/telegram/bin/telegram-cli -k /home/username/telegram/tg-server.pub -dWS /tmp/tg.sck --json"
-#For tcp socket this could be
-#command=/bin/bash -c "/home/username/telegram/bin/telegram-cli -k /home/username/telegram/tg-server.pub -dWP 7777 --json"
+;For tcp socket this could be
+;command=/bin/bash -c "/home/username/telegram/bin/telegram-cli -k /home/username/telegram/tg-server.pub -dWP 7777 --json"
 directory=/home/username/telegram
 redirect_stderr=true
 stopsignal=KILL
