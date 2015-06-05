@@ -53,18 +53,16 @@ abstract class AbstractWrapperCommands
             if (substr($answer, 0, 7) === 'ANSWER ') {
                 $bytes = (int) substr($answer, 7);
                 if ($bytes > 0) {
-                    $string = trim(fread($this->_fp, $bytes + 1));
+                    $jsonObj = json_decode(trim(fread($this->_fp, $bytes + 1)));
 
-                    if ($string === 'SUCCESS') { //For "status_online" and "status_offline"
-                        return true;
+                    if (is_null($jsonObj)) {
+                        return 'You must enable the json flag on the telegram daemon to get proper response messages here.';
                     }
 
-                    return $string;
+                    return $jsonObj;
                 }
             } else {
-                if ($answer === PHP_EOL) { //For commands like "msg"
-                    return true;
-                }
+                return $answer;
             }
         }
 
