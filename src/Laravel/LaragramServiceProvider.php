@@ -33,7 +33,7 @@ class LaragramServiceProvider extends ServiceProvider
     {
         $this->app->singleton('Williamson\Laragram\TgCommands', function () {
             try {
-                $tg = new TgCommands('unix:///tmp/tg.sck');
+                $tg = new TgCommands(Config::get('services.telegram.socket'));
             } catch (ClientException $e) {
                 Log::error($e->getMessage());
 
