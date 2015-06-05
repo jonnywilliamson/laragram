@@ -41,7 +41,7 @@ Requirements
  - A **running** [telegram-cli](https://github.com/vysheng/tg/) listening on a unix-socket (`-S`) or a port (`-P`). Needs to be configured already (phone-number, etc.).
  - php >= 5.4.0
  - curl installed
-
+ - json flag added to the telegram daemon startup command
 
 Installing Telegram-cli
 -----------------------
@@ -64,7 +64,11 @@ Once registered, you can exit telegram-cli (`safe_quit`) and launch it as a daem
 To run telegram-cli as a daemon you need to use the `-d` flag and set a unix socket `-S`. 
 
 ```shell
-~/telegram/bin/telegram-cli -k ~/telegram/tg-server.pub -dWS /tmp/tg.sck &
+~/telegram/bin/telegram-cli -k ~/telegram/tg-server.pub -dWS /tmp/tg.sck --json
+```
+Or instead you may use a TCP port
+```
+~/telegram/bin/telegram-cli -k ~/telegram/tg-server.pub -dWP 7777 --json
 ```
 
 The `-W` switch means the contact-list gets loaded on startup - this allows you to send messages straight away. The `&` at the ends means that the command will load in the background allowing you to continue with the script.
@@ -96,6 +100,16 @@ Open `config/app.php` file, find the providers array and add to the bottom
 ```
 
 the Facade alias of `TG` is automatcially registered for you in the serviceprovider boot method.
+
+Open `config/services.php` file, add the following array to specifiy what type of socket you would like to connect to the
+telegram daemon.
+
+```php
+    'telegram' => [
+        'socket' =>'tcp://127.0.0.1:7778'
+    ]
+```
+Other values include unix sockets. ie `'socket' => 'unix:///tmp/tg.sck'`
 
 You're done!
 
@@ -176,7 +190,9 @@ Then create a new file `/etc/supervisor/conf.d/telegram.conf`
 and copy the following into it, adding/replacing any log files you wish to create
 ```shell
 [program:telegram]
-command=/bin/bash -c "rm -f /tmp/tg.sck && /home/username/telegram/bin/telegram-cli -k /home/username/telegram/tg-server.pub -dWS /tmp/tg.sck"
+command=/bin/bash -c "rm -f /tmp/tg.sck && /home/username/telegram/bin/telegram-cli -k /home/username/telegram/tg-server.pub -dWS /tmp/tg.sck --json"
+#For tcp socket this could be
+#command=/bin/bash -c "/home/username/telegram/bin/telegram-cli -k /home/username/telegram/tg-server.pub -dWP 7777 --json"
 directory=/home/username/telegram
 redirect_stderr=true
 stopsignal=KILL
