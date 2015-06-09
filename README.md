@@ -100,9 +100,10 @@ Open `config/app.php` file, find the providers array and add to the bottom
 ```
 
 NEW! If you're running Laravel 5.1 or greater you can use this syntax instead in the `config/app.php` file:
+
 ```php
         Williamson\Laragram\Laravel\LaragramServiceProvider::class
-``
+```
 Note the lack of single quotes for the laravel 5 version.
 
 The Facade alias of `TG` is automatcially registered for you in the serviceprovider boot method.
