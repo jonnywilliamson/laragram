@@ -20,7 +20,7 @@ class LaragramServiceProvider extends ServiceProvider
         $loader  = AliasLoader::getInstance();
         $aliases = Config::get('app.aliases');
         if (empty($aliases['TG'])) {
-            $loader->alias('TG', 'Williamson\Laragram\Facades\LaragramFacade');
+            $loader->alias('TG', 'Williamson\Laragram\Laravel\LaragramFacade');
         }
     }
 
