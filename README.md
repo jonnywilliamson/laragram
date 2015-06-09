@@ -99,7 +99,13 @@ Open `config/app.php` file, find the providers array and add to the bottom
         'Williamson\Laragram\Laravel\LaragramServiceProvider'
 ```
 
-the Facade alias of `TG` is automatcially registered for you in the serviceprovider boot method.
+NEW! If you're running Laravel 5.1 or greater you can use this syntax instead in the `config/app.php` file:
+```php
+        Williamson\Laragram\Laravel\LaragramServiceProvider::class
+``
+Note the lack of single quotes for the laravel 5 version.
+
+The Facade alias of `TG` is automatcially registered for you in the serviceprovider boot method.
 
 Open `config/services.php` file, add the following array to specifiy what type of socket you would like to connect to the
 telegram daemon.
