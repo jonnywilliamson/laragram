@@ -92,7 +92,7 @@ Installing Laragram
 In your laravel project-root:
 
 ```shell
-composer require williamson/laragram:~0.1
+composer require williamson/laragram
 ```
 
 ### Service Providers and Facades ###
