@@ -1,14 +1,20 @@
 <?php namespace Williamson\Laragram\Laravel;
 
-use Config;
-use Illuminate\Foundation\AliasLoader;
-use Illuminate\Support\ServiceProvider;
 use Log;
+use Config;
 use Williamson\Laragram\TgCommands;
+use Illuminate\Support\ServiceProvider;
 use Williamson\Laragram\ClientException;
 
 class LaragramServiceProvider extends ServiceProvider
 {
+
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = true;
 
     /**
      * Bootstrap the application services.
@@ -17,11 +23,7 @@ class LaragramServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $loader  = AliasLoader::getInstance();
-        $aliases = Config::get('app.aliases');
-        if (empty($aliases['TG'])) {
-            $loader->alias('TG', 'Williamson\Laragram\Laravel\LaragramFacade');
-        }
+
     }
 
     /**
@@ -42,5 +44,15 @@ class LaragramServiceProvider extends ServiceProvider
 
             return $tg;
         });
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return [TgCommands::class];
     }
 }

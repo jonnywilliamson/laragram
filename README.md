@@ -3,6 +3,9 @@ Laravel Wrapper for telegram-cli
 
 This project was originally forked from: [php-telegram-cli-client](https://github.com/zyberspace/php-telegram-cli-client) and credit to [zyberspace](https://github.com/zyberspace) for the start I needed to get this project working.
 
+What is new in 1.0?
+------------
+* To make the laravel service provider "deferred" (performance enhancing feature), you must now manually register the `TG` alias in the `config/app.php` alias section.
 
 What is it?
 ------------
@@ -99,16 +102,19 @@ Open `config/app.php` file, find the providers array and add to the bottom
         'Williamson\Laragram\Laravel\LaragramServiceProvider'
 ```
 
-NEW! If you're running Laravel 5.1 or greater you can use this syntax instead in the `config/app.php` file:
+If you're running Laravel 5.1 or greater you can use this syntax instead in the `config/app.php` file:
 
 ```php
         Williamson\Laragram\Laravel\LaragramServiceProvider::class
 ```
-Note the lack of single quotes for the laravel 5 version.
+___Note the lack of single quotes for the laravel 5 version.___
 
-The Facade alias of `TG` is automatcially registered for you in the serviceprovider boot method.
+Now you add the following line to the Alias array in `config/app.php` to register the shorthand `TG` facade
+```php
+        'TG' => \Williamson\Laragram\Laravel\LaragramFacade::class,
+```
 
-Open `config/services.php` file, add the following array to specifiy what type of socket you would like to connect to the
+Open `config/services.php` file, add the following array to specify what type of socket you would like to connect to the
 telegram daemon.
 
 ```php
